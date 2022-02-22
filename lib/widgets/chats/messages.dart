@@ -9,36 +9,40 @@ class Messages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        if(snapshot.connectionState==ConnectionState.waiting){
+    return FutureBuilder(
+      future: Future.value(FirebaseAuth.instance.currentUser?.uid),
+      builder:(ctx,futureSnapeShot){
+        if(futureSnapeShot.connectionState==ConnectionState.waiting)
+        {
               return const Center(
                 child: CircularProgressIndicator(
                   color:Colors.pink ,
                 ),
               );
         }
+         return StreamBuilder(
 
-         return FutureBuilder(
-           future: FirebaseAuth.instance.currentUser.uid,
-             builder:(ctx,futureSnapeShot){
-           if(futureSnapeShot.connectionState==ConnectionState.waiting)
-             {
+             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+               if(snapshot.connectionState==ConnectionState.waiting){
               return const Center(
                 child: CircularProgressIndicator(),
               );
              }
            return  ListView.builder(itemBuilder: (ctx, i){
              DocumentSnapshot course = snapshot.data.docs[i];
-             return MessageBubble(course['text']);
+             return MessageBubble(
+                 course['text'],
+                 course['userid']==futureSnapeShot.data,
+                 course['username'],
+             );
            },
              reverse: true,
              itemCount: snapshot.requireData.size,
            );
-         } );
+         } ,
+         stream:FirebaseFirestore.instance.collection('chat').orderBy('createdAt',descending: true).snapshots(),);
 
       },
-      stream: FirebaseFirestore.instance.collection('chat').orderBy('createdAt',descending: true).snapshots(),
     );
   }
 }
