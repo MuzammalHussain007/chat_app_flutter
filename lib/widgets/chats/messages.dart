@@ -30,11 +30,17 @@ class Messages extends StatelessWidget {
              }
            return  ListView.builder(itemBuilder: (ctx, i){
              DocumentSnapshot course = snapshot.data.docs[i];
-             return MessageBubble(
+             print(course['text']);
+             print(course['userid']);
+             print(course['userid']);
+
+             return   MessageBubble(
                  course['text'],
                  course['userid']==futureSnapeShot.data,
-                 course['username'],
+                 course['userid'],
              );
+
+
            },
              reverse: true,
              itemCount: snapshot.requireData.size,
