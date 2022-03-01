@@ -37,6 +37,13 @@ class _AuthScreenState extends State<AuthScreen> {
                 child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                  const CircleAvatar(radius: 40.0,
+                ),
+                FlatButton.icon(onPressed: (){},
+                    textColor: Theme.of(context).primaryColor,
+                    icon: const Icon(Icons.image),
+                    label: const Text('Add Image')),
+
                 TextFormField(
                   key: ValueKey('email'),
                   validator: (value) {

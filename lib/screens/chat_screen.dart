@@ -14,7 +14,10 @@ class ChatScreen extends StatelessWidget {
         actions: [
            PopupMenuButton( icon: const Icon(Icons.more_vert),
                 itemBuilder: (ctx)=>[
-             const PopupMenuItem(child: Text('Logout'),
+              PopupMenuItem(child: Text('Logout'),
+               onTap: (){
+               
+               },
              ),
            ]
            ),
