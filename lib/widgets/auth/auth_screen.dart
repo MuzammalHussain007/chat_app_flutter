@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:chat_app_flutter/picker/user_image_picker.dart';
 import 'package:flutter/material.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -16,13 +19,30 @@ class _AuthScreenState extends State<AuthScreen> {
   var _password = '';
   var _username = '';
 
+  File _file = File("");
+
+  void _pickedImage(File image)
+  {
+    _file = image ;
+  }
+
   void _saveForm(){
     if(formKey.currentState!.validate())
       {
-        formKey.currentState!.save();
-        widget.submit(_email , _password , _username ,isLogin );
-        print('Data is Saved...');
-        FocusScope.of(context).unfocus();
+        if(_file!=null &&!isLogin)
+          {
+            formKey.currentState!.save();
+            widget.submit(_email , _password , _username ,isLogin );
+            print('Data is Saved...');
+            FocusScope.of(context).unfocus();
+          }
+        else
+          {
+            Scaffold.of(context).showSnackBar(SnackBar(
+              backgroundColor: Theme.of(context).errorColor,
+                content: Text('Please Pick an Image')));
+          }
+
       }
   }
   @override
@@ -37,13 +57,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                  const CircleAvatar(radius: 40.0,
-                ),
-                FlatButton.icon(onPressed: (){},
-                    textColor: Theme.of(context).primaryColor,
-                    icon: const Icon(Icons.image),
-                    label: const Text('Add Image')),
-
+                if(!isLogin)UserImagePicker(_pickedImage),
                 TextFormField(
                   key: ValueKey('email'),
                   validator: (value) {

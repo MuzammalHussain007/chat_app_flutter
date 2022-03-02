@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_app_flutter/widgets/auth/auth_screen.dart' as auth_wigit;
@@ -14,6 +16,7 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   final _auth = FirebaseAuth.instance;
   var _isLoading = false;
+
 
   void _submitAuthandForm(
       String email, String password, String username, bool isLogin) async {
